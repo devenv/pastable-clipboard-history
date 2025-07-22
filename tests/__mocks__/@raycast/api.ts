@@ -9,7 +9,7 @@ export const showToast = jest.fn();
 
 export const Toast = {
   Style: {
-    Success: 'success',
-    Failure: 'failure',
+    Success: "success",
+    Failure: "failure",
   },
-}; 
+};

@@ -2,7 +2,7 @@ import { Clipboard, showHUD, showToast, Toast } from "@raycast/api";
 
 export async function pasteClipboardAtPosition(
   offset: number,
-  positionName: string,
+  positionName: string
 ): Promise<void> {
   try {
     // Read clipboard content at the specified offset

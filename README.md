@@ -1,5 +1,9 @@
 # Pastable Clipboard History
 
+![CI](https://github.com/wook/pastable-clipboard-history/workflows/CI/badge.svg)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Raycast](https://img.shields.io/badge/Raycast-FF6363?logo=raycast&logoColor=white)
+
 A powerful Raycast extension that provides instant access to your clipboard history with dedicated keyboard shortcuts for positions 0-5, plus a special "pop" command.
 
 ## ✨ Features
