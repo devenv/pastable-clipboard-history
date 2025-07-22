@@ -1,31 +1,35 @@
-# Second Last Clipboard - Raycast Extension
+# Pastable Clipboard History - Raycast Extension
 
 ![Raycast](https://img.shields.io/badge/Raycast-FF6363?style=for-the-badge&logo=raycast&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)
 
-A powerful Raycast extension that allows you to quickly access and paste the **second last item** from your clipboard history. Perfect for developers and power users who frequently need to access recently copied content.
+A streamlined Raycast extension that provides **instant paste commands** for clipboard positions 2-10. Perfect for power users who need quick access to recent clipboard items with dedicated keyboard shortcuts.
 
-## 🚀 Features
+## 🚀 Why This Extension?
 
-### ⚡ Quick Paste Command
-- **Instant execution** with no-view mode
-- **Keyboard shortcut support** for lightning-fast access
-- **Smart previews** with content truncation
-- **HUD confirmations** showing what was pasted
+While Raycast has excellent built-in clipboard history, **Pastable Clipboard History** provides **lightning-fast access** to specific positions with dedicated keyboard shortcuts. No menus, no navigation - just instant paste!
 
-### 📋 Clipboard History Viewer
-- **Visual interface** showing up to 6 recent clipboard items
-- **Search functionality** to find specific content
-- **Rich metadata** including character counts and timestamps
-- **Action panel** with copy, paste, and refresh options
-- **Special highlighting** for the target second-last item ⭐
+## ⚡ Features
 
-### 🛡️ Robust Error Handling
-- Graceful handling of empty clipboard history
-- User-friendly error messages via toast notifications
+### 🔢 Position-Based Paste Commands
+- **9 dedicated commands** for clipboard positions 2nd through 10th
+- **No-view mode** for instant execution
+- **Smart previews** showing what was pasted
+- **Error handling** for missing clipboard items
+
+### ⌨️ Perfect for Keyboard Shortcuts
+- Assign hotkeys like `⌘⇧2`, `⌘⇧3`, etc.
+- **Muscle memory friendly** - consistent pattern
+- **Zero UI** - paste happens immediately
+- **HUD confirmations** showing pasted content
+
+### 🛡️ Robust & Reliable
+- Graceful handling when positions don't exist
+- Clear error messages
 - Comprehensive logging for debugging
+- TypeScript for type safety
 
 ## 🔧 Installation
 
@@ -34,7 +38,7 @@ A powerful Raycast extension that allows you to quickly access and paste the **s
 1. **Clone or download this repository:**
    ```bash
    git clone <your-repo-url>
-   cd second-last-clipboard
+   cd pastable-clipboard-history
    ```
 
 2. **Install dependencies:**
@@ -47,59 +51,79 @@ A powerful Raycast extension that allows you to quickly access and paste the **s
    npm run dev
    ```
 
-4. **Open Raycast** - your extension will appear in the commands list
+4. **Open Raycast** - all 9 paste commands will appear
 
 ## 🎯 Usage
 
-### Setting Up Keyboard Shortcuts (Recommended)
+### Setting Up Keyboard Shortcuts (Highly Recommended!)
 
 1. Open Raycast Settings (`⌘ + ,`)
-2. Navigate to **Extensions** → **Second Last Clipboard**
-3. Assign keyboard shortcuts:
-   - **Quick Paste**: `⌘ + ⇧ + V` (recommended)
-   - **History Viewer**: `⌘ + ⇧ + H` (recommended)
+2. Navigate to **Extensions** → **Pastable Clipboard History**
+3. Assign keyboard shortcuts for frequently used positions:
 
-### Commands
+**Suggested Shortcuts:**
+```
+⌘ + ⇧ + 2   →   Paste 2nd Clipboard Item
+⌘ + ⇧ + 3   →   Paste 3rd Clipboard Item  
+⌘ + ⇧ + 4   →   Paste 4th Clipboard Item
+⌘ + ⇧ + 5   →   Paste 5th Clipboard Item
+⌘ + ⇧ + 6   →   Paste 6th Clipboard Item
+```
 
-#### 1. Paste Second Last Clipboard Item
-- **Mode**: No-view (instant execution)
-- **Function**: Retrieves and immediately pastes the second last clipboard item
-- **Best for**: Quick workflows with keyboard shortcuts
+### Available Commands
 
-#### 2. Clipboard History Viewer
-- **Mode**: View (interactive interface)
-- **Function**: Browse your clipboard history visually
-- **Features**:
-  - Search through clipboard items
-  - Preview content before pasting
-  - Copy items back to system clipboard
-  - Refresh history on demand
+| Command | Description | Clipboard Offset | Best For |
+|---------|-------------|------------------|----------|
+| **Paste 2nd** | Second last item | offset: 1 | Most frequently needed |
+| **Paste 3rd** | Third last item | offset: 2 | Secondary choice |
+| **Paste 4th** | Fourth last item | offset: 3 | Tertiary option |
+| **Paste 5th** | Fifth last item | offset: 4 | Occasional use |
+| **Paste 6th** | Sixth last item | offset: 5 | Deep history |
+| **Paste 7th** | Seventh last item | offset: 6 | Extended history |
+| **Paste 8th** | Eighth last item | offset: 7 | Advanced use |
+| **Paste 9th** | Ninth last item | offset: 8 | Power user |
+| **Paste 10th** | Tenth last item | offset: 9 | Maximum depth |
 
 ## 🏗️ Technical Details
 
 ### Architecture
-- **Framework**: React with TypeScript
+- **Framework**: TypeScript with Raycast API
+- **Pattern**: Shared utility function with position-specific commands
+- **Mode**: No-view for instant execution
 - **API**: Raycast API v1.101.1
-- **State Management**: React Hooks
-- **Code Quality**: ESLint + Prettier
 
-### Key API Usage
+### Key Implementation
 ```typescript
-// Access second last clipboard item
-const content = await Clipboard.readText({ offset: 1 });
+// Shared utility function
+async function pasteClipboardAtPosition(offset: number, positionName: string)
 
-// Paste content to active application
-await Clipboard.paste(content);
-
-// Show confirmation
-await showHUD(`Pasted: ${preview}`);
+// Usage in each command
+await pasteClipboardAtPosition(1, "2nd");  // For paste-second
+await pasteClipboardAtPosition(2, "3rd");  // For paste-third
+// ... etc
 ```
 
-### Clipboard History Support
-- Supports up to 6 items (Raycast API limitation)
-- Offset 0 = current clipboard
-- Offset 1 = second last (target item)
-- Offsets 2-5 = further back in history
+### Error Handling
+- **Missing items**: Graceful handling with user-friendly messages
+- **API failures**: Comprehensive error logging and user feedback
+- **Position validation**: Clear feedback about what position was attempted
+
+## 💡 Use Cases
+
+### For Developers
+- **Code snippets**: Quick access to recently copied functions/classes
+- **URLs**: Switch between different API endpoints or documentation links
+- **Commands**: Rapid access to terminal commands or scripts
+
+### For Writers
+- **Research**: Quick access to quotes, references, or sources
+- **Templates**: Faster insertion of boilerplate text
+- **Revisions**: Easy access to previous versions of sentences/paragraphs
+
+### For Designers
+- **Color codes**: Quick access to hex codes or CSS values
+- **Asset paths**: Faster insertion of file paths or URLs
+- **Measurements**: Quick access to dimensions or specifications
 
 ## 🧪 Development
 
@@ -107,6 +131,27 @@ await showHUD(`Pasted: ${preview}`);
 - **Node.js** 16.10 or higher
 - **npm** 7.0 or higher
 - **Raycast** app installed on macOS
+
+### Project Structure
+```
+pastable-clipboard-history/
+├── package.json              # Extension manifest with 9 commands
+├── tsconfig.json             # TypeScript configuration
+├── .eslintrc.js              # ESLint configuration
+├── assets/
+│   └── clipboard.png         # Extension icon (512x512)
+└── src/
+    ├── paste-utils.ts        # Shared utility function
+    ├── paste-second.tsx      # 2nd position command
+    ├── paste-third.tsx       # 3rd position command
+    ├── paste-fourth.tsx      # 4th position command
+    ├── paste-fifth.tsx       # 5th position command
+    ├── paste-sixth.tsx       # 6th position command
+    ├── paste-seventh.tsx     # 7th position command
+    ├── paste-eighth.tsx      # 8th position command
+    ├── paste-ninth.tsx       # 9th position command
+    └── paste-tenth.tsx       # 10th position command
+```
 
 ### Available Scripts
 
@@ -117,79 +162,44 @@ npm run dev
 # Build for production
 npm run build
 
-# Run linting (may require additional setup)
+# Run linting
 npm run lint
 
 # Fix linting issues
 npm run fix-lint
-
-# Prepare for publishing
-npm run publish
 ```
 
-### Project Structure
-```
-second-last-clipboard/
-├── package.json              # Extension manifest
-├── tsconfig.json             # TypeScript configuration
-├── .eslintrc.js              # ESLint configuration
-├── .prettierrc               # Prettier configuration
-├── .gitignore                # Git ignore rules
-├── README.md                 # This file
-├── LICENSE                   # MIT license
-├── CHANGELOG.md              # Version history
-├── CONTRIBUTING.md           # Contributing guidelines
-├── .github/                  # GitHub templates
-│   ├── workflows/ci.yml      # CI/CD pipeline
-│   ├── ISSUE_TEMPLATE/       # Issue templates
-│   └── pull_request_template.md
-├── assets/
-│   └── clipboard.png         # Extension icon (512x512)
-└── src/
-    ├── paste-second-last.tsx # Quick paste command
-    └── clipboard-history.tsx # History viewer
-```
+## 🔄 Workflow Integration
 
-## 🤝 Contributing
+### Typical Usage Pattern
+1. **Copy multiple items** during research/development
+2. **Assign shortcuts** to positions 2-5 for frequent access
+3. **Use muscle memory** - `⌘⇧2` becomes automatic
+4. **Get instant feedback** via HUD confirmations
 
-Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
-
-### Development Guidelines
-- Follow the existing code style (ESLint + Prettier configured)
-- Add proper TypeScript types
-- Test your changes thoroughly
-- Update documentation as needed
-
-## 📋 Roadmap
-
-- [ ] **Store Publication**: Submit to Raycast Extension Store
-- [ ] **Enhanced Content Type Detection**: Support for images, files, etc.
-- [ ] **History Persistence**: Save clipboard history across sessions
-- [ ] **Customizable History Depth**: Allow users to configure item count
-- [ ] **Fuzzy Search**: Enhanced search capabilities
-- [ ] **Keyboard Navigation**: Full keyboard support in history viewer
+### Pro Tips
+- Start with shortcuts for positions 2-4 (most commonly needed)
+- Use consistent modifier keys across all positions
+- The HUD preview helps confirm you pasted the right item
+- Combine with Raycast's built-in clipboard history for full workflow
 
 ## ❓ FAQ
 
-**Q: Why specifically the "second last" clipboard item?**
-A: Often when copying multiple items, you need to paste the previous item while keeping the most recent one for later use. This extension makes that workflow instant.
+**Q: Why not just use Raycast's built-in clipboard history?**
+A: This extension is for power users who want instant access without opening any interface. Think of it as "speed dial" for your clipboard.
 
-**Q: How many clipboard items can I access?**
-A: The extension can access up to 6 recent clipboard items due to Raycast API limitations.
+**Q: How many positions can I access?**
+A: This extension covers positions 2-10. Position 1 (most recent) is accessible via standard `⌘+V`.
 
-**Q: Does this work with images or files?**
-A: Currently, the extension focuses on text content. Support for other content types is planned for future releases.
+**Q: What happens if a position doesn't exist?**
+A: You'll get a clear error message indicating that position is empty in your clipboard history.
 
-**Q: Can I customize the keyboard shortcuts?**
-A: Yes! Assign any keyboard shortcuts through Raycast Settings → Extensions → Second Last Clipboard.
+**Q: Can I customize the position names?**
+A: The position names are built-in (2nd, 3rd, etc.), but you can assign any keyboard shortcuts you prefer.
 
-## 🐛 Issues and Support
+## 🤝 Contributing
 
-If you encounter any issues or have feature requests:
-
-1. **Check existing issues** in the repository
-2. **Create a new issue** with detailed description and steps to reproduce
-3. **Include system information**: Raycast version, macOS version, etc.
+Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## 📄 License
 
@@ -197,20 +207,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- **Raycast Team** for the amazing platform and APIs
-- **React Team** for the excellent framework
-- **TypeScript Team** for type safety and developer experience
-
-## ⭐ Show Your Support
-
-If this extension helps your workflow, please consider:
-- ⭐ **Starring the repository**
-- 🐦 **Sharing on social media**
-- 🤝 **Contributing improvements**
-- 📝 **Writing a review** when it's available in the store
+- **Raycast Team** for the excellent platform and clipboard APIs
+- **Power users** who inspired this streamlined approach
 
 ---
 
 <div align="center">
-  <sub>Built with ❤️ using Raycast Extensions API</sub>
+  <sub>Built for speed ⚡ - optimized for keyboard warriors</sub>
 </div> 

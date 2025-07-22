@@ -1,24 +1,66 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
-  "name": "second-last-clipboard",
-  "title": "Second Last Clipboard",
-  "description": "Retrieve and paste the second last item from clipboard history",
+  "name": "pastable-clipboard-history",
+  "title": "Pastable Clipboard History",
+  "description": "Instantly paste clipboard items from positions 2-10 with dedicated keyboard shortcuts",
   "icon": "clipboard.png",
   "author": "raycast-dev",
   "categories": ["Productivity"],
   "license": "MIT",
   "commands": [
     {
-      "name": "paste-second-last",
-      "title": "Paste Second Last Clipboard Item",
-      "description": "Quickly retrieves and pastes the second last clipboard item",
+      "name": "paste-second",
+      "title": "Paste 2nd Clipboard Item",
+      "description": "Paste the second last clipboard item (offset 1)",
       "mode": "no-view"
     },
     {
-      "name": "clipboard-history",
-      "title": "Clipboard History Viewer",
-      "description": "Browse and select from clipboard history with a visual interface",
-      "mode": "view"
+      "name": "paste-third",
+      "title": "Paste 3rd Clipboard Item", 
+      "description": "Paste the third last clipboard item (offset 2)",
+      "mode": "no-view"
+    },
+    {
+      "name": "paste-fourth",
+      "title": "Paste 4th Clipboard Item",
+      "description": "Paste the fourth last clipboard item (offset 3)", 
+      "mode": "no-view"
+    },
+    {
+      "name": "paste-fifth",
+      "title": "Paste 5th Clipboard Item",
+      "description": "Paste the fifth last clipboard item (offset 4)",
+      "mode": "no-view"
+    },
+    {
+      "name": "paste-sixth",
+      "title": "Paste 6th Clipboard Item", 
+      "description": "Paste the sixth last clipboard item (offset 5)",
+      "mode": "no-view"
+    },
+    {
+      "name": "paste-seventh",
+      "title": "Paste 7th Clipboard Item",
+      "description": "Paste the seventh last clipboard item (offset 6)",
+      "mode": "no-view"
+    },
+    {
+      "name": "paste-eighth",
+      "title": "Paste 8th Clipboard Item",
+      "description": "Paste the eighth last clipboard item (offset 7)",
+      "mode": "no-view"
+    },
+    {
+      "name": "paste-ninth",
+      "title": "Paste 9th Clipboard Item",
+      "description": "Paste the ninth last clipboard item (offset 8)",
+      "mode": "no-view"
+    },
+    {
+      "name": "paste-tenth",
+      "title": "Paste 10th Clipboard Item",
+      "description": "Paste the tenth last clipboard item (offset 9)",
+      "mode": "no-view"
     }
   ],
   "dependencies": {
