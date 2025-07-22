@@ -1,13 +1,13 @@
-import { 
-  Clipboard, 
-  showHUD, 
-  showToast, 
-  Toast, 
-  ActionPanel, 
-  Action, 
-  List, 
+import {
+  Clipboard,
+  showHUD,
+  showToast,
+  Toast,
+  ActionPanel,
+  Action,
+  List,
   Icon,
-  Color
+  Color,
 } from "@raycast/api";
 import { useState, useEffect } from "react";
 
@@ -28,7 +28,7 @@ export default function ClipboardHistoryViewer() {
   async function loadClipboardHistory() {
     try {
       const items: ClipboardItem[] = [];
-      
+
       // Load up to 6 items from clipboard history (Raycast limit)
       for (let i = 0; i < 6; i++) {
         try {
@@ -37,7 +37,7 @@ export default function ClipboardHistoryViewer() {
             items.push({
               content: content.trim(),
               index: i,
-              timestamp: new Date()
+              timestamp: new Date(),
             });
           }
         } catch {
@@ -45,13 +45,13 @@ export default function ClipboardHistoryViewer() {
           break;
         }
       }
-      
+
       setClipboardItems(items);
     } catch (error) {
       await showToast({
         style: Toast.Style.Failure,
         title: "Error",
-        message: "Failed to load clipboard history"
+        message: "Failed to load clipboard history",
       });
     } finally {
       setIsLoading(false);
@@ -61,15 +61,18 @@ export default function ClipboardHistoryViewer() {
   async function pasteItem(item: ClipboardItem) {
     try {
       await Clipboard.paste(item.content);
-      const itemDescription = item.index === 0 ? "current" : 
-                            item.index === 1 ? "second last" : 
-                            `${item.index + 1} items back`;
+      const itemDescription =
+        item.index === 0
+          ? "current"
+          : item.index === 1
+            ? "second last"
+            : `${item.index + 1} items back`;
       await showHUD(`Pasted ${itemDescription} clipboard item`);
     } catch (error) {
       await showToast({
         style: Toast.Style.Failure,
         title: "Paste Failed",
-        message: "Could not paste the selected item"
+        message: "Could not paste the selected item",
       });
     }
   }
@@ -86,9 +89,12 @@ export default function ClipboardHistoryViewer() {
   }
 
   function getItemSubtitle(item: ClipboardItem) {
-    const position = item.index === 0 ? "Current" : 
-                    item.index === 1 ? "Second Last" : 
-                    `${item.index + 1} items back`;
+    const position =
+      item.index === 0
+        ? "Current"
+        : item.index === 1
+          ? "Second Last"
+          : `${item.index + 1} items back`;
     const charCount = `${item.content.length} chars`;
     return `${position} • ${charCount}`;
   }
@@ -101,8 +107,8 @@ export default function ClipboardHistoryViewer() {
   }
 
   return (
-    <List 
-      isLoading={isLoading} 
+    <List
+      isLoading={isLoading}
       searchBarPlaceholder="Search clipboard history..."
       navigationTitle="Clipboard History"
     >
@@ -122,11 +128,7 @@ export default function ClipboardHistoryViewer() {
             accessories={[getItemAccessory(item)]}
             actions={
               <ActionPanel>
-                <Action
-                  title="Paste Item"
-                  icon={Icon.Clipboard}
-                  onAction={() => pasteItem(item)}
-                />
+                <Action title="Paste Item" icon={Icon.Clipboard} onAction={() => pasteItem(item)} />
                 <Action.CopyToClipboard
                   title="Copy to System Clipboard"
                   content={item.content}
@@ -147,4 +149,4 @@ export default function ClipboardHistoryViewer() {
       )}
     </List>
   );
-} 
+}
