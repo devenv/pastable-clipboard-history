@@ -47,10 +47,10 @@ export async function popClipboardAtPosition(offset: number, positionName: strin
     // Paste the content
     await Clipboard.paste(content);
 
-    // Rotate clipboard history by copying items from positions 1-9 in sequence
+    // Rotate clipboard history by copying items from positions 1-5 in sequence
     // This shifts everything forward, effectively "removing" the current item
     try {
-      for (let i = 1; i <= 9; i++) {
+      for (let i = 1; i <= 5; i++) {
         const nextItem = await Clipboard.readText({ offset: i });
         if (nextItem && nextItem.trim() !== "") {
           await Clipboard.copy(nextItem);

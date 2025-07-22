@@ -32,7 +32,7 @@ A powerful Raycast extension that provides instant access to your clipboard hist
 |---------|-------------|--------|
 | `pop-current` | Pop Current Clipboard Item | 0 |
 
-**Pop Functionality**: The pop command pastes the current clipboard content AND rotates the clipboard history forward. Items from positions 1-9 get shifted up, effectively removing the popped item from being accessible again.
+**Pop Functionality**: The pop command pastes the current clipboard content AND rotates the clipboard history forward. Items from positions 1-5 get shifted up, effectively removing the popped item from being accessible again.
 
 ## 🎮 Usage
 
