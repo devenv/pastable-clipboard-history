@@ -3,7 +3,7 @@
   "name": "pastable-clipboard-history",
   "title": "Pastable Clipboard History",
   "description": "Instantly paste clipboard items from positions 0-9 with dedicated keyboard shortcuts",
-  "icon": "clipboard.png",
+  "icon": "clipboard",
   "author": "wook",
   "categories": ["Productivity"],
   "license": "MIT",
