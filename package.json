@@ -3,6 +3,8 @@
   "name": "second-last-clipboard",
   "title": "Second Last Clipboard",
   "description": "Retrieve and paste the second last item from clipboard history",
+  "icon": "clipboard.png",
+  "author": "raycast-dev",
   "categories": ["Productivity"],
   "license": "MIT",
   "commands": [

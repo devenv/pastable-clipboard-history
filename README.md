@@ -27,27 +27,13 @@ A powerful Raycast extension that allows you to quickly access and paste the **s
 - User-friendly error messages via toast notifications
 - Comprehensive logging for debugging
 
-## 📸 Screenshots
-
-### Quick Paste in Action
-*The extension instantly pastes your second-last clipboard item with a confirmation HUD*
-
-### History Viewer Interface
-*Browse your clipboard history with a clean, searchable interface*
-
 ## 🔧 Installation
 
-### Option 1: Install from Raycast Store (Coming Soon)
-1. Open Raycast
-2. Navigate to the Extension Store
-3. Search for "Second Last Clipboard"
-4. Click Install
+### Development Installation
 
-### Option 2: Development Installation
-
-1. **Clone the repository:**
+1. **Clone or download this repository:**
    ```bash
-   git clone https://github.com/yourusername/second-last-clipboard.git
+   git clone <your-repo-url>
    cd second-last-clipboard
    ```
 
@@ -131,7 +117,7 @@ npm run dev
 # Build for production
 npm run build
 
-# Run linting
+# Run linting (may require additional setup)
 npm run lint
 
 # Fix linting issues
@@ -146,11 +132,19 @@ npm run publish
 second-last-clipboard/
 ├── package.json              # Extension manifest
 ├── tsconfig.json             # TypeScript configuration
-├── eslint.config.js          # ESLint configuration
+├── .eslintrc.js              # ESLint configuration
 ├── .prettierrc               # Prettier configuration
 ├── .gitignore                # Git ignore rules
 ├── README.md                 # This file
 ├── LICENSE                   # MIT license
+├── CHANGELOG.md              # Version history
+├── CONTRIBUTING.md           # Contributing guidelines
+├── .github/                  # GitHub templates
+│   ├── workflows/ci.yml      # CI/CD pipeline
+│   ├── ISSUE_TEMPLATE/       # Issue templates
+│   └── pull_request_template.md
+├── assets/
+│   └── clipboard.png         # Extension icon (512x512)
 └── src/
     ├── paste-second-last.tsx # Quick paste command
     └── clipboard-history.tsx # History viewer
@@ -158,14 +152,7 @@ second-last-clipboard/
 
 ## 🤝 Contributing
 
-Contributions are welcome! Here's how you can help:
-
-1. **Fork the repository**
-2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
-3. **Make your changes** and test thoroughly
-4. **Commit your changes**: `git commit -m 'Add amazing feature'`
-5. **Push to the branch**: `git push origin feature/amazing-feature`
-6. **Open a Pull Request**
+Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
 
 ### Development Guidelines
 - Follow the existing code style (ESLint + Prettier configured)
@@ -176,8 +163,7 @@ Contributions are welcome! Here's how you can help:
 ## 📋 Roadmap
 
 - [ ] **Store Publication**: Submit to Raycast Extension Store
-- [ ] **Custom Icons**: Add clipboard-themed icons
-- [ ] **Content Type Detection**: Support for images, files, etc.
+- [ ] **Enhanced Content Type Detection**: Support for images, files, etc.
 - [ ] **History Persistence**: Save clipboard history across sessions
 - [ ] **Customizable History Depth**: Allow users to configure item count
 - [ ] **Fuzzy Search**: Enhanced search capabilities
@@ -201,7 +187,7 @@ A: Yes! Assign any keyboard shortcuts through Raycast Settings → Extensions �
 
 If you encounter any issues or have feature requests:
 
-1. **Check existing issues** in the [GitHub Issues](https://github.com/yourusername/second-last-clipboard/issues) page
+1. **Check existing issues** in the repository
 2. **Create a new issue** with detailed description and steps to reproduce
 3. **Include system information**: Raycast version, macOS version, etc.
 
