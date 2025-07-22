@@ -45,30 +45,6 @@
       "mode": "no-view"
     },
     {
-      "name": "paste-sixth",
-      "title": "Paste 6th Previous Clipboard Item",
-      "description": "Paste the 6th previous clipboard item (offset 6)",
-      "mode": "no-view"
-    },
-    {
-      "name": "paste-seventh",
-      "title": "Paste 7th Previous Clipboard Item",
-      "description": "Paste the 7th previous clipboard item (offset 7)",
-      "mode": "no-view"
-    },
-    {
-      "name": "paste-eighth",
-      "title": "Paste 8th Previous Clipboard Item",
-      "description": "Paste the 8th previous clipboard item (offset 8)",
-      "mode": "no-view"
-    },
-    {
-      "name": "paste-ninth",
-      "title": "Paste 9th Previous Clipboard Item",
-      "description": "Paste the 9th previous clipboard item (offset 9)",
-      "mode": "no-view"
-    },
-    {
       "name": "pop-current",
       "title": "Pop Current Clipboard Item",
       "description": "Paste and remove the current clipboard item (offset 0)",

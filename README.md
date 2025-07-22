@@ -1,11 +1,11 @@
 # Pastable Clipboard History
 
-A powerful Raycast extension that provides instant access to your clipboard history with dedicated keyboard shortcuts for positions 0-9, plus a special "pop" command.
+A powerful Raycast extension that provides instant access to your clipboard history with dedicated keyboard shortcuts for positions 0-5, plus a special "pop" command.
 
 ## ✨ Features
 
-- **🎯 10 Instant Paste Commands**: Direct access to clipboard positions 0-9
-- **⚡ Pop Command**: Paste and remove the second-last clipboard item
+- **🎯 6 Instant Paste Commands**: Direct access to clipboard positions 0-5 (Raycast's full range)
+- **⚡ Pop Command**: Paste and remove the current clipboard item
 - **🔥 No-View Mode**: All commands execute instantly without opening UI
 - **⌨️ Keyboard-First**: Perfect for hotkey assignment and rapid workflows  
 - **🛡️ Error Handling**: Graceful handling of empty clipboard positions
@@ -13,7 +13,7 @@ A powerful Raycast extension that provides instant access to your clipboard hist
 
 ## 🚀 Commands
 
-### Paste Commands (10 total)
+### Paste Commands (6 total)
 | Command | Description | Offset |
 |---------|-------------|--------|
 | `paste-current` | Paste Current Clipboard Item | 0 |
@@ -22,10 +22,6 @@ A powerful Raycast extension that provides instant access to your clipboard hist
 | `paste-third` | Paste 3rd Previous Clipboard Item | 3 |
 | `paste-fourth` | Paste 4th Previous Clipboard Item | 4 |
 | `paste-fifth` | Paste 5th Previous Clipboard Item | 5 |
-| `paste-sixth` | Paste 6th Previous Clipboard Item | 6 |
-| `paste-seventh` | Paste 7th Previous Clipboard Item | 7 |
-| `paste-eighth` | Paste 8th Previous Clipboard Item | 8 |
-| `paste-ninth` | Paste 9th Previous Clipboard Item | 9 |
 
 ### Pop Command (1 total)
 | Command | Description | Offset |
@@ -61,10 +57,6 @@ A powerful Raycast extension that provides instant access to your clipboard hist
 | **Paste 3rd Previous** | 3rd previous item | offset: 3 | Tertiary option |
 | **Paste 4th Previous** | 4th previous item | offset: 4 | Occasional use |
 | **Paste 5th Previous** | 5th previous item | offset: 5 | Deep history |
-| **Paste 6th Previous** | 6th previous item | offset: 6 | Extended history |
-| **Paste 7th Previous** | 7th previous item | offset: 7 | Advanced use |
-| **Paste 8th Previous** | 8th previous item | offset: 8 | Power user |
-| **Paste 9th Previous** | 9th previous item | offset: 9 | Maximum depth |
 
 ## 🏗️ Technical Details
 
