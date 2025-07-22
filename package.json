@@ -67,6 +67,12 @@
       "title": "Paste 9th Previous Clipboard Item",
       "description": "Paste the 9th previous clipboard item (offset 9)",
       "mode": "no-view"
+    },
+    {
+      "name": "pop-second-last",
+      "title": "Pop Second Last Clipboard Item",
+      "description": "Paste and remove the second last clipboard item (offset 1)",
+      "mode": "no-view"
     }
   ],
   "dependencies": {

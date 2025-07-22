@@ -1,59 +1,40 @@
-# Pastable Clipboard History - Raycast Extension
+# Pastable Clipboard History
 
-![Raycast](https://img.shields.io/badge/Raycast-FF6363?style=for-the-badge&logo=raycast&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)
+A powerful Raycast extension that provides instant access to your clipboard history with dedicated keyboard shortcuts for positions 0-9, plus a special "pop" command.
 
-A streamlined Raycast extension that provides **instant paste commands** for clipboard positions 0-9. Perfect for power users who need lightning-fast access to clipboard history with dedicated keyboard shortcuts.
+## ✨ Features
 
-## 🚀 Why This Extension?
+- **🎯 10 Instant Paste Commands**: Direct access to clipboard positions 0-9
+- **⚡ Pop Command**: Paste and remove the second-last clipboard item
+- **🔥 No-View Mode**: All commands execute instantly without opening UI
+- **⌨️ Keyboard-First**: Perfect for hotkey assignment and rapid workflows  
+- **🛡️ Error Handling**: Graceful handling of empty clipboard positions
+- **📱 HUD Notifications**: Visual confirmation with content preview
 
-While Raycast has excellent built-in clipboard history, **Pastable Clipboard History** provides **lightning-fast access** to specific positions with dedicated keyboard shortcuts. No menus, no navigation - just instant paste!
+## 🚀 Commands
 
-## ⚡ Features
+### Paste Commands (10 total)
+| Command | Description | Offset |
+|---------|-------------|--------|
+| `paste-current` | Paste Current Clipboard Item | 0 |
+| `paste-first` | Paste 1st Previous Clipboard Item | 1 |
+| `paste-second` | Paste 2nd Previous Clipboard Item | 2 |
+| `paste-third` | Paste 3rd Previous Clipboard Item | 3 |
+| `paste-fourth` | Paste 4th Previous Clipboard Item | 4 |
+| `paste-fifth` | Paste 5th Previous Clipboard Item | 5 |
+| `paste-sixth` | Paste 6th Previous Clipboard Item | 6 |
+| `paste-seventh` | Paste 7th Previous Clipboard Item | 7 |
+| `paste-eighth` | Paste 8th Previous Clipboard Item | 8 |
+| `paste-ninth` | Paste 9th Previous Clipboard Item | 9 |
 
-### 🔢 10 Position-Based Paste Commands
-- **Position 0**: Current clipboard item (same as ⌘+V)
-- **Positions 1-9**: Previous clipboard items (offsets 1-9)
-- **No-view mode** for instant execution
-- **Smart previews** showing what was pasted
-- **Error handling** for missing clipboard items
+### Pop Command (1 total)
+| Command | Description | Offset |
+|---------|-------------|--------|
+| `pop-second-last` | Pop Second Last Clipboard Item | 1 |
 
-### ⌨️ Perfect for Keyboard Shortcuts
-- Assign hotkeys like `⌘⇧0`, `⌘⇧1`, `⌘⇧2`, etc.
-- **Muscle memory friendly** - consistent pattern
-- **Zero UI** - paste happens immediately
-- **HUD confirmations** showing pasted content
+**Pop Functionality**: The pop command both pastes the content AND removes it from clipboard history by copying it again, effectively shifting the history forward.
 
-### 🛡️ Robust & Reliable
-- Graceful handling when positions don't exist
-- Clear error messages
-- Comprehensive logging for debugging
-- TypeScript for type safety
-
-## 🔧 Installation
-
-### Development Installation
-
-1. **Clone this repository:**
-   ```bash
-   git clone <your-repo-url>
-   cd pastable-clipboard-history
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Start development mode:**
-   ```bash
-   npm run dev
-   ```
-
-4. **Open Raycast** - all 10 paste commands will appear
-
-## 🎯 Usage
+## 🎮 Usage
 
 ### Setting Up Keyboard Shortcuts (Highly Recommended!)
 
