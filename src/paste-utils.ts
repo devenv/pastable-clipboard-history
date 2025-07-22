@@ -47,12 +47,25 @@ export async function popClipboardAtPosition(offset: number, positionName: strin
     // Paste the content
     await Clipboard.paste(content);
 
-    // Clear the clipboard by copying an empty string to prevent re-pasting
-    await Clipboard.copy("");
+    // Rotate clipboard history by copying items from positions 1-9 in sequence
+    // This shifts everything forward, effectively "removing" the current item
+    try {
+      for (let i = 1; i <= 9; i++) {
+        const nextItem = await Clipboard.readText({ offset: i });
+        if (nextItem && nextItem.trim() !== "") {
+          await Clipboard.copy(nextItem);
+          // Small delay to ensure proper sequencing
+          await new Promise(resolve => setTimeout(resolve, 50));
+        }
+      }
+    } catch (rotateError) {
+      // If rotation fails, just continue - the paste still worked
+      console.log("Rotation failed but paste succeeded:", rotateError);
+    }
 
     // Show confirmation HUD with preview
     const preview = content.length > 50 ? content.substring(0, 50) + "…" : content;
-    await showHUD(`Popped ${positionName}: ${preview} (clipboard cleared)`);
+    await showHUD(`Popped ${positionName}: ${preview} (rotated history)`);
   } catch (error) {
     await showToast({
       style: Toast.Style.Failure,
