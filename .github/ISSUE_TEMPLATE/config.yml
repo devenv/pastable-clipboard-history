@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🚀 Raycast Community
+    url: https://raycast.com/community
+    about: Join the Raycast community for general discussions
+  - name: 📖 Raycast Documentation
+    url: https://developers.raycast.com/
+    about: Official Raycast extension development documentation
+  - name: 💬 Feature Request Discussion
+    url: https://github.com/wook/pastable-clipboard-history/discussions
+    about: Discuss ideas and feature requests with the community 

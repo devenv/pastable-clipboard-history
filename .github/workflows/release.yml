@@ -1,0 +1,148 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 1.0.0)'
+        required: true
+        type: string
+
+jobs:
+  release:
+    name: Release to Raycast Store
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run full test suite
+      run: |
+        npm run lint
+        npm test
+        npm run test:coverage
+
+    - name: Build extension
+      run: npm run build
+
+    - name: Validate extension
+      run: |
+        # Ensure build was successful
+        if [ ! -d "dist" ]; then
+          echo "❌ Build failed: dist directory not found"
+          exit 1
+        fi
+        
+        # Validate package.json for store requirements
+        node -e "
+          const pkg = JSON.parse(require('fs').readFileSync('package.json', 'utf8'));
+          
+          // Check required fields for Raycast Store
+          const required = {
+            name: 'string',
+            title: 'string', 
+            description: 'string',
+            author: 'string',
+            license: 'string',
+            commands: 'array'
+          };
+          
+          for (const [field, type] of Object.entries(required)) {
+            if (!pkg[field]) {
+              console.error(\`❌ Missing required field: \${field}\`);
+              process.exit(1);
+            }
+            if (type === 'array' && !Array.isArray(pkg[field])) {
+              console.error(\`❌ Field \${field} must be an array\`);
+              process.exit(1);
+            }
+            if (type === 'string' && typeof pkg[field] !== 'string') {
+              console.error(\`❌ Field \${field} must be a string\`);
+              process.exit(1);
+            }
+          }
+          
+          console.log('✅ Package.json validation passed');
+          console.log('Extension:', pkg.title);
+          console.log('Version:', pkg.version || 'Not specified');
+          console.log('Author:', pkg.author);
+          console.log('Commands:', pkg.commands.length);
+        "
+
+    - name: Create GitHub Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref_name }}
+        release_name: Release ${{ github.ref_name }}
+        body: |
+          ## 🎉 Pastable Clipboard History ${{ github.ref_name }}
+          
+          ### ✨ Features
+          - 6 instant paste commands for clipboard positions 0-5
+          - Pop command with fixed single-copy strategy
+          - Perfect Raycast integration
+          
+          ### 🚀 Installation
+          Install from the [Raycast Store](https://raycast.com/wook/pastable-clipboard-history) or manually:
+          
+          ```bash
+          git clone https://github.com/wook/pastable-clipboard-history.git
+          cd pastable-clipboard-history
+          npm install
+          npm run dev
+          ```
+          
+          ### 📦 What's Included
+          - 7 total commands (6 paste + 1 pop)
+          - Comprehensive test suite
+          - Full TypeScript support
+          - Production-ready build
+          
+          **Ready for keyboard shortcuts and daily productivity!** ⚡
+        draft: false
+        prerelease: false
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: extension-release-${{ github.ref_name || inputs.version }}
+        path: |
+          dist/
+          package.json
+          README.md
+          LICENSE
+        retention-days: 30
+
+    - name: Publish to Raycast Store (Manual)
+      run: |
+        echo "🚀 Ready for Raycast Store submission!"
+        echo ""
+        echo "To publish to the Raycast Store:"
+        echo "1. Run: npm run publish"
+        echo "2. Follow the prompts from the Raycast CLI"
+        echo "3. Wait for store review and approval"
+        echo ""
+        echo "Extension Details:"
+        echo "- Name: pastable-clipboard-history"
+        echo "- Commands: 7 total"
+        echo "- Author: wook"
+        echo "- License: MIT"
+        echo ""
+        echo "Build artifacts uploaded to GitHub release ✅" 

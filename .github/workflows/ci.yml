@@ -2,86 +2,243 @@ name: CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, master, develop ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main, master, develop ]
 
 jobs:
-  lint-and-typecheck:
+  test:
+    name: Test & Lint
     runs-on: ubuntu-latest
-    
+
     strategy:
       matrix:
-        node-version: [16.x, 18.x, 20.x]
-    
+        node-version: [18.x, 20.x]
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
+
     - name: Setup Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        
+
     - name: Install dependencies
       run: npm ci
-      
-    - name: Run ESLint
-      run: npm run lint
-      
-    - name: Check TypeScript types
+
+    - name: Run TypeScript type check
       run: npx tsc --noEmit
-      
-    - name: Check Prettier formatting
-      run: npx prettier --check .
-      
+
+    - name: Run linter
+      run: npm run lint
+
+    - name: Run tests
+      run: npm test
+
+    - name: Run tests with coverage
+      run: npm run test:coverage
+
+    - name: Upload coverage to Codecov
+      if: matrix.node-version == '20.x'
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage/lcov.info
+        flags: unittests
+        name: codecov-umbrella
+
+  build:
+    name: Build Extension
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
     - name: Build extension
       run: npm run build
 
-  raycast-validate:
-    runs-on: macos-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18.x'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Install Raycast CLI
-      run: npm install -g @raycast/api@latest
-      
-    - name: Validate extension
-      run: ray validate
-      
-    - name: Build extension
-      run: ray build
+    - name: Check for build artifacts
+      run: |
+        if [ ! -d "dist" ]; then
+          echo "❌ Build failed: dist directory not found"
+          exit 1
+        fi
+        echo "✅ Build successful: dist directory created"
+        ls -la dist/
 
-  security-audit:
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: extension-build
+        path: dist/
+        retention-days: 7
+
+  security:
+    name: Security Audit
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18.x'
+        node-version: '20.x'
         cache: 'npm'
-        
+
     - name: Install dependencies
       run: npm ci
-      
+
     - name: Run security audit
       run: npm audit --audit-level=moderate
-      
-    - name: Check for known vulnerabilities
-      run: npx audit-ci --moderate 
+
+    - name: Check for vulnerabilities
+      run: |
+        AUDIT_RESULT=$(npm audit --audit-level=high --json)
+        if echo "$AUDIT_RESULT" | jq -e '.metadata.vulnerabilities.high > 0 or .metadata.vulnerabilities.critical > 0' > /dev/null; then
+          echo "❌ High/Critical vulnerabilities found"
+          npm audit --audit-level=high
+          exit 1
+        fi
+        echo "✅ No high/critical vulnerabilities found"
+
+  quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Check code formatting
+      run: npx prettier --check "src/**/*.{ts,tsx}" "tests/**/*.{ts,tsx}"
+
+    - name: Check for unused dependencies
+      run: |
+        # Install depcheck for dependency analysis
+        npm install -g depcheck
+        depcheck --ignores="@types/*,jest,ts-jest,@raycast/eslint-config"
+
+    - name: Validate package.json
+      run: |
+        # Check if package.json is valid JSON
+        node -e "JSON.parse(require('fs').readFileSync('package.json', 'utf8'))"
+        echo "✅ package.json is valid JSON"
+
+        # Check required Raycast fields
+        node -e "
+          const pkg = JSON.parse(require('fs').readFileSync('package.json', 'utf8'));
+          const required = ['name', 'title', 'description', 'author', 'license', 'commands'];
+          const missing = required.filter(field => !pkg[field]);
+          if (missing.length > 0) {
+            console.error('❌ Missing required fields:', missing.join(', '));
+            process.exit(1);
+          }
+          console.log('✅ All required Raycast fields present');
+        "
+
+  raycast-validation:
+    name: Raycast Extension Validation
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Install Raycast CLI
+      run: npm install -g @raycast/api@latest
+
+    - name: Validate extension structure
+      run: |
+        # Check if all command files exist
+        node -e "
+          const pkg = JSON.parse(require('fs').readFileSync('package.json', 'utf8'));
+          const fs = require('fs');
+          const path = require('path');
+          
+          if (!pkg.commands) {
+            console.error('❌ No commands defined in package.json');
+            process.exit(1);
+          }
+          
+          const missingFiles = [];
+          pkg.commands.forEach(cmd => {
+            const filePath = path.join('src', cmd.name + '.tsx');
+            if (!fs.existsSync(filePath)) {
+              missingFiles.push(filePath);
+            }
+          });
+          
+          if (missingFiles.length > 0) {
+            console.error('❌ Missing command files:', missingFiles.join(', '));
+            process.exit(1);
+          }
+          
+          console.log('✅ All command files exist');
+          console.log('Commands:', pkg.commands.map(c => c.name).join(', '));
+        "
+
+    - name: Lint extension with Raycast CLI
+      run: npm run lint
+
+    - name: Build with Raycast CLI
+      run: npm run build
+
+  summary:
+    name: CI Summary
+    runs-on: ubuntu-latest
+    needs: [test, build, security, quality, raycast-validation]
+    if: always()
+
+    steps:
+    - name: Check all jobs status
+      run: |
+        echo "## CI Results Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "| Job | Status |" >> $GITHUB_STEP_SUMMARY
+        echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
+        echo "| Test & Lint | ${{ needs.test.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Build | ${{ needs.build.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Security | ${{ needs.security.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Quality | ${{ needs.quality.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Raycast Validation | ${{ needs.raycast-validation.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        if [[ "${{ needs.test.result }}" == "success" && "${{ needs.build.result }}" == "success" && "${{ needs.security.result }}" == "success" && "${{ needs.quality.result }}" == "success" && "${{ needs.raycast-validation.result }}" == "success" ]]; then
+          echo "🎉 **All checks passed!** Extension is ready for deployment." >> $GITHUB_STEP_SUMMARY
+        else
+          echo "⚠️ **Some checks failed.** Please review the failing jobs above." >> $GITHUB_STEP_SUMMARY
+          exit 1
+        fi 

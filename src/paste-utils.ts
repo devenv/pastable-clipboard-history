@@ -1,6 +1,9 @@
 import { Clipboard, showHUD, showToast, Toast } from "@raycast/api";
 
-export async function pasteClipboardAtPosition(offset: number, positionName: string): Promise<void> {
+export async function pasteClipboardAtPosition(
+  offset: number,
+  positionName: string,
+): Promise<void> {
   try {
     // Read clipboard content at the specified offset
     const content = await Clipboard.readText({ offset });
@@ -70,4 +73,4 @@ export async function popClipboardAtPosition(offset: number, positionName: strin
     });
     console.error(`Error popping ${positionName} clipboard item:`, error);
   }
-} 
+}
