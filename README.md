@@ -2,41 +2,36 @@
 
 ![Raycast](https://img.shields.io/badge/Raycast-FF6363?style=for-the-badge&logo=raycast&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)
 
-A smart, configurable Raycast extension that provides **instant access to clipboard positions** with intelligent search, visual previews, and user-customizable settings. Perfect for power users who want more than basic clipboard access.
+A streamlined Raycast extension that provides **instant paste commands** for clipboard positions 0-9. Perfect for power users who need lightning-fast access to clipboard history with dedicated keyboard shortcuts.
 
 ## 🚀 Why This Extension?
 
-While Raycast has excellent built-in clipboard history, **Pastable Clipboard History** provides:
-- **🎛️ Configurable positions** - Choose 3-15 clipboard slots
-- **🔍 Smart search** - Find clipboard items by content
-- **👁️ Visual previews** - See what you're pasting before selection
-- **⚙️ Customizable display** - Adjust preview length and timestamps
-- **⌨️ Keyboard shortcuts** - Fast navigation and actions
+While Raycast has excellent built-in clipboard history, **Pastable Clipboard History** provides **lightning-fast access** to specific positions with dedicated keyboard shortcuts. No menus, no navigation - just instant paste!
 
 ## ⚡ Features
 
-### 🎛️ **Fully Configurable**
-- **Position Count**: Choose 3, 5, 8, 10, or 15 clipboard positions
-- **Preview Length**: Short (30), Medium (60), Long (100), or Extra Long (150) characters
-- **Timestamps**: Toggle display of when items were copied
+### 🔢 10 Position-Based Paste Commands
+- **Position 0**: Current clipboard item (same as ⌘+V)
+- **Positions 1-9**: Previous clipboard items (offsets 1-9)
+- **No-view mode** for instant execution
+- **Smart previews** showing what was pasted
+- **Error handling** for missing clipboard items
 
-### 🔍 **Smart Interface**
-- **Intelligent Search**: Filter clipboard items by content
-- **Visual Previews**: See content before pasting
-- **Position Indicators**: Clear 2nd, 3rd, 4th, etc. labeling
-- **Character Counts**: Know how much content you're pasting
-- **Smart Icons**: Different icons for recent vs. older items
+### ⌨️ Perfect for Keyboard Shortcuts
+- Assign hotkeys like `⌘⇧0`, `⌘⇧1`, `⌘⇧2`, etc.
+- **Muscle memory friendly** - consistent pattern
+- **Zero UI** - paste happens immediately
+- **HUD confirmations** showing pasted content
 
-### ⚡ **Fast Actions**
-- **Instant Paste**: Primary action on each item
-- **Copy to Current**: Move items to top of clipboard
-- **Show Full Content**: View complete content in toast
-- **Refresh History**: Update clipboard data on demand
+### 🛡️ Robust & Reliable
+- Graceful handling when positions don't exist
+- Clear error messages
+- Comprehensive logging for debugging
+- TypeScript for type safety
 
-## 🔧 Installation & Setup
+## 🔧 Installation
 
 ### Development Installation
 
@@ -56,198 +51,168 @@ While Raycast has excellent built-in clipboard history, **Pastable Clipboard His
    npm run dev
    ```
 
-4. **Open Raycast** - the extension will appear as "Paste from Clipboard Position"
+4. **Open Raycast** - all 10 paste commands will appear
 
-## ⚙️ Configuration
+## 🎯 Usage
 
-### Setting Up Preferences
+### Setting Up Keyboard Shortcuts (Highly Recommended!)
 
 1. Open Raycast Settings (`⌘ + ,`)
 2. Navigate to **Extensions** → **Pastable Clipboard History**
-3. Configure your preferences:
+3. Assign keyboard shortcuts for frequently used positions:
 
-#### **Number of Clipboard Positions**
-Choose how many positions to show:
-- **3 positions** (2nd-4th) - Minimal, fast
-- **5 positions** (2nd-6th) - **Default**, balanced
-- **8 positions** (2nd-9th) - Extended history
-- **10 positions** (2nd-11th) - Power user
-- **15 positions** (2nd-16th) - Maximum depth
-
-#### **Content Preview Length**
-Set preview text length:
-- **Short (30 chars)** - Compact display
-- **Medium (60 chars)** - **Default**, good balance
-- **Long (100 chars)** - More context
-- **Extra Long (150 chars)** - Maximum preview
-
-#### **Show Timestamps**
-- **Enabled** (default) - Shows "2m ago", "1h ago", etc.
-- **Disabled** - Hide timestamps for cleaner display
-
-### Recommended Keyboard Shortcut
-Assign `⌘ + ⇧ + V` to "Paste from Clipboard Position" for instant access.
-
-## 🎯 Usage Guide
-
-### **Quick Access Workflow**
-1. **Trigger**: Use your keyboard shortcut or search "Paste from Clipboard Position"
-2. **Browse**: See visual list of clipboard positions with previews
-3. **Search**: Type to filter items by content
-4. **Select**: Press Enter or click to paste instantly
-
-### **Keyboard Navigation**
-- **↑/↓ Arrows**: Navigate through items
-- **Enter**: Paste selected item
-- **⌘ + C**: Copy item to current clipboard position
-- **⌘ + E**: Show full content in toast
-- **⌘ + R**: Refresh clipboard history
-- **Escape**: Close without action
-
-### **Visual Indicators**
-- **⭐ Yellow Star**: 2nd position (most commonly needed)
-- **📋 Blue Clipboard**: 3rd-4th positions (frequent use)
-- **📄 Document**: 5th+ positions (occasional use)
-
-## 💡 Use Cases
-
-### **For Developers**
+**Suggested Shortcuts:**
 ```
-Scenario: API development
-1. Copy API endpoint → Copy authentication token → Copy request body
-2. Open extension → Select "3rd" for endpoint → Paste
-3. Switch contexts → Select "2nd" for token → Paste
+⌘ + ⇧ + 0   →   Paste Current Clipboard Item
+⌘ + ⇧ + 1   →   Paste 1st Previous Clipboard Item
+⌘ + ⇧ + 2   →   Paste 2nd Previous Clipboard Item
+⌘ + ⇧ + 3   →   Paste 3rd Previous Clipboard Item
+⌘ + ⇧ + 4   →   Paste 4th Previous Clipboard Item
 ```
 
-### **For Writers**
-```
-Scenario: Research article
-1. Copy multiple quotes and references
-2. Use search to find specific quote: "according to"
-3. Preview before pasting to ensure correct citation
-```
+### Available Commands
 
-### **For Designers**
-```
-Scenario: CSS styling
-1. Copy hex colors, measurements, font names
-2. Use position labels to remember: 2nd=primary color, 3rd=spacing
-3. Quick paste without losing workflow
-```
+| Command | Description | Clipboard Offset | Best For |
+|---------|-------------|------------------|----------|
+| **Paste Current** | Current clipboard item | offset: 0 | Same as ⌘+V |
+| **Paste 1st Previous** | 1st previous item | offset: 1 | Most frequently needed |
+| **Paste 2nd Previous** | 2nd previous item | offset: 2 | Secondary choice |
+| **Paste 3rd Previous** | 3rd previous item | offset: 3 | Tertiary option |
+| **Paste 4th Previous** | 4th previous item | offset: 4 | Occasional use |
+| **Paste 5th Previous** | 5th previous item | offset: 5 | Deep history |
+| **Paste 6th Previous** | 6th previous item | offset: 6 | Extended history |
+| **Paste 7th Previous** | 7th previous item | offset: 7 | Advanced use |
+| **Paste 8th Previous** | 8th previous item | offset: 8 | Power user |
+| **Paste 9th Previous** | 9th previous item | offset: 9 | Maximum depth |
 
 ## 🏗️ Technical Details
 
-### **Smart Architecture**
-- **Single Command**: Clean, uncluttered Raycast interface
-- **Dynamic Lists**: Content loads based on user preferences
-- **React Hooks**: Modern state management
-- **TypeScript**: Full type safety
+### Architecture
+- **Framework**: TypeScript with Raycast API
+- **Pattern**: Shared utility function with position-specific commands
+- **Mode**: No-view for instant execution
+- **API**: Raycast API v1.101.1
 
-### **Preference Integration**
+### Key Implementation
 ```typescript
-interface Preferences {
-  maxPositions: string;    // "3" | "5" | "8" | "10" | "15"
-  previewLength: string;   // "30" | "60" | "100" | "150"
-  showTimestamps: boolean; // true | false
-}
+// Shared utility function
+async function pasteClipboardAtPosition(offset: number, positionName: string)
+
+// Usage in each command
+await pasteClipboardAtPosition(0, "current");      // For paste-current
+await pasteClipboardAtPosition(1, "1st previous"); // For paste-first
+// ... etc
 ```
 
-### **Performance Features**
-- **Lazy Loading**: Only loads configured number of positions
-- **Efficient Search**: Real-time filtering without API calls
-- **Smart Caching**: Clipboard data cached until refresh
-- **Error Handling**: Graceful degradation when positions unavailable
+### Error Handling
+- **Missing items**: Graceful handling with user-friendly messages
+- **API failures**: Comprehensive error logging and user feedback
+- **Position validation**: Clear feedback about what position was attempted
 
-## 🆚 Comparison with Alternatives
+## 💡 Use Cases
 
-| Feature | Pastable Clipboard History | Raycast Built-in | Other Extensions |
-|---------|---------------------------|------------------|------------------|
-| **Configurable Positions** | ✅ 3-15 positions | ❌ Fixed | ❌ Usually fixed |
-| **Smart Search** | ✅ Content filtering | ✅ Basic | ➖ Varies |
-| **Visual Previews** | ✅ Customizable length | ➖ Limited | ➖ Varies |
-| **Position Labels** | ✅ 2nd, 3rd, etc. | ❌ None | ❌ Usually none |
-| **Quick Keyboard Access** | ✅ Single hotkey | ✅ Single hotkey | ➖ Varies |
-| **Timestamp Display** | ✅ Configurable | ✅ Always shown | ➖ Varies |
+### For Developers
+- **Code snippets**: Quick access to recently copied functions/classes
+- **URLs**: Switch between different API endpoints or documentation links
+- **Commands**: Rapid access to terminal commands or scripts
 
-## 🛠️ Development
+### For Writers
+- **Research**: Quick access to quotes, references, or sources
+- **Templates**: Faster insertion of boilerplate text
+- **Revisions**: Easy access to previous versions of sentences/paragraphs
 
-### **Project Structure**
+### For Designers
+- **Color codes**: Quick access to hex codes or CSS values
+- **Asset paths**: Faster insertion of file paths or URLs
+- **Measurements**: Quick access to dimensions or specifications
+
+## 🧪 Development
+
+### Prerequisites
+- **Node.js** 16.10 or higher
+- **npm** 7.0 or higher
+- **Raycast** app installed on macOS
+
+### Project Structure
 ```
 pastable-clipboard-history/
-├── package.json                    # Extension manifest + preferences
-├── src/
-│   └── paste-from-position.tsx    # Main command implementation
+├── package.json                 # Extension manifest with 10 commands
+├── tsconfig.json                # TypeScript configuration
 ├── assets/
-│   └── clipboard.png              # Extension icon
-└── docs/                          # Documentation
+│   └── clipboard.png            # Extension icon (512x512)
+└── src/
+    ├── paste-utils.ts           # Shared utility function
+    ├── paste-current.tsx        # Position 0 command
+    ├── paste-first.tsx          # Position 1 command
+    ├── paste-second.tsx         # Position 2 command
+    ├── paste-third.tsx          # Position 3 command
+    ├── paste-fourth.tsx         # Position 4 command
+    ├── paste-fifth.tsx          # Position 5 command
+    ├── paste-sixth.tsx          # Position 6 command
+    ├── paste-seventh.tsx        # Position 7 command
+    ├── paste-eighth.tsx         # Position 8 command
+    └── paste-ninth.tsx          # Position 9 command
 ```
 
-### **Key Components**
-- **Preferences**: User configuration via Raycast settings
-- **ClipboardItem Interface**: Structured clipboard data
-- **Dynamic Loading**: Position-based clipboard access
-- **Smart UI**: Responsive list with search and actions
+### Available Scripts
 
-### **Available Scripts**
 ```bash
-npm run dev        # Start development with hot reload
-npm run build      # Build for production  
-npm run lint       # Check code quality
-npm run fix-lint   # Auto-fix linting issues
+# Start development with hot reloading
+npm run dev
+
+# Build for production
+npm run build
+
+# Run linting
+npm run lint
+
+# Fix linting issues
+npm run fix-lint
 ```
 
-## 🔄 Changelog
+## 🔄 Workflow Integration
 
-### **v2.0.0 - Configurable Revolution**
-- 🎛️ **NEW**: User-configurable position count (3-15)
-- 🔍 **NEW**: Smart search and filtering
-- 👁️ **NEW**: Customizable preview lengths  
-- ⚙️ **NEW**: Preference-based configuration
-- 🗂️ **CHANGED**: Single smart command instead of 9 separate commands
-- ⚡ **IMPROVED**: Better UX with visual indicators and shortcuts
+### Typical Usage Pattern
+1. **Copy multiple items** during research/development
+2. **Assign shortcuts** to positions 1-4 for frequent access
+3. **Use muscle memory** - `⌘⇧1` becomes automatic
+4. **Get instant feedback** via HUD confirmations
 
-### **v1.0.0 - Initial Release**
-- Basic 9-command clipboard position access
+### Pro Tips
+- Start with shortcuts for positions 1-3 (most commonly needed)
+- Use consistent modifier keys across all positions
+- The HUD preview helps confirm you pasted the right item
+- Combine with Raycast's built-in clipboard history for full workflow
 
 ## ❓ FAQ
 
-**Q: How is this different from Raycast's built-in clipboard history?**
-A: We provide configurable position counts, smart search, visual previews, and quick access without opening the full history interface.
+**Q: Why not just use Raycast's built-in clipboard history?**
+A: This extension is for power users who want instant access without opening any interface. Think of it as "speed dial" for your clipboard.
 
-**Q: Can I still use keyboard shortcuts for instant access?**
-A: Yes! Assign a hotkey to "Paste from Clipboard Position" and you get instant access to the visual interface.
+**Q: How many positions can I access?**
+A: This extension covers positions 0-9. Position 0 is the current clipboard (same as ⌘+V).
 
-**Q: What happens if I configure more positions than I have clipboard items?**
-A: The extension gracefully shows only available items. Empty positions don't appear.
+**Q: What happens if a position doesn't exist?**
+A: You'll get a clear error message indicating that position is empty in your clipboard history.
 
-**Q: Can I search through clipboard content?**
-A: Yes! Just start typing in the search box to filter items by their content.
-
-**Q: How do timestamps work?**
-A: Timestamps are approximated based on clipboard position. Toggle them on/off in preferences.
+**Q: Can I customize the position names?**
+A: The position names are built-in (current, 1st previous, etc.), but you can assign any keyboard shortcuts you prefer.
 
 ## 🤝 Contributing
 
-We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
-### **Development Priorities**
-1. **Performance optimizations** for large clipboard histories
-2. **Additional content type support** (images, files)
-3. **Advanced search features** (regex, content type filtering)
-4. **Export/backup functionality** for clipboard history
+Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## 📄 License
 
-MIT License - see [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
-- **Raycast Team** for the extensible platform and clipboard APIs
-- **Community feedback** that drove the configurable redesign
-- **Power users** who inspired the smart interface approach
+- **Raycast Team** for the excellent platform and clipboard APIs
+- **Power users** who inspired this streamlined approach
 
 ---
 
 <div align="center">
-  <sub>⚡ Configurable • 🔍 Searchable • 👁️ Visual • ⌨️ Fast</sub>
+  <sub>Built for speed ⚡ - optimized for keyboard warriors</sub>
 </div> 

@@ -2,53 +2,71 @@
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "pastable-clipboard-history",
   "title": "Pastable Clipboard History",
-  "description": "Instantly paste from configurable clipboard positions with smart search and preview",
+  "description": "Instantly paste clipboard items from positions 0-9 with dedicated keyboard shortcuts",
   "icon": "clipboard.png",
   "author": "raycast-dev",
   "categories": ["Productivity"],
   "license": "MIT",
-  "preferences": [
-    {
-      "name": "maxPositions",
-      "title": "Number of Clipboard Positions",
-      "description": "How many clipboard positions to show (2nd through Nth)",
-      "type": "dropdown",
-      "default": "5",
-      "data": [
-        { "value": "3", "title": "3 positions (2nd-4th)" },
-        { "value": "5", "title": "5 positions (2nd-6th)" },
-        { "value": "8", "title": "8 positions (2nd-9th)" },
-        { "value": "10", "title": "10 positions (2nd-11th)" },
-        { "value": "15", "title": "15 positions (2nd-16th)" }
-      ]
-    },
-    {
-      "name": "previewLength",
-      "title": "Content Preview Length",
-      "description": "How many characters to show in clipboard item previews",
-      "type": "dropdown",
-      "default": "60",
-      "data": [
-        { "value": "30", "title": "Short (30 characters)" },
-        { "value": "60", "title": "Medium (60 characters)" },
-        { "value": "100", "title": "Long (100 characters)" },
-        { "value": "150", "title": "Extra Long (150 characters)" }
-      ]
-    },
-    {
-      "name": "showTimestamps",
-      "title": "Show Timestamps",
-      "description": "Display when each clipboard item was copied",
-      "type": "checkbox",
-      "default": true
-    }
-  ],
   "commands": [
     {
-      "name": "paste-from-position",
-      "title": "Paste from Clipboard Position",
-      "description": "Browse and paste from configurable clipboard positions with search and preview",
-      "mode": "view"
+      "name": "paste-current",
+      "title": "Paste Current Clipboard Item",
+      "description": "Paste the current clipboard item (position 0)",
+      "mode": "no-view"
+    },
+    {
+      "name": "paste-first",
+      "title": "Paste 1st Previous Clipboard Item",
+      "description": "Paste the 1st previous clipboard item (offset 1)",
+      "mode": "no-view"
+    },
+    {
+      "name": "paste-second",
+      "title": "Paste 2nd Previous Clipboard Item",
+      "description": "Paste the 2nd previous clipboard item (offset 2)",
+      "mode": "no-view"
+    },
+    {
+      "name": "paste-third",
+      "title": "Paste 3rd Previous Clipboard Item",
+      "description": "Paste the 3rd previous clipboard item (offset 3)",
+      "mode": "no-view"
+    },
+    {
+      "name": "paste-fourth",
+      "title": "Paste 4th Previous Clipboard Item",
+      "description": "Paste the 4th previous clipboard item (offset 4)",
+      "mode": "no-view"
+    },
+    {
+      "name": "paste-fifth",
+      "title": "Paste 5th Previous Clipboard Item",
+      "description": "Paste the 5th previous clipboard item (offset 5)",
+      "mode": "no-view"
+    },
+    {
+      "name": "paste-sixth",
+      "title": "Paste 6th Previous Clipboard Item",
+      "description": "Paste the 6th previous clipboard item (offset 6)",
+      "mode": "no-view"
+    },
+    {
+      "name": "paste-seventh",
+      "title": "Paste 7th Previous Clipboard Item",
+      "description": "Paste the 7th previous clipboard item (offset 7)",
+      "mode": "no-view"
+    },
+    {
+      "name": "paste-eighth",
+      "title": "Paste 8th Previous Clipboard Item",
+      "description": "Paste the 8th previous clipboard item (offset 8)",
+      "mode": "no-view"
+    },
+    {
+      "name": "paste-ninth",
+      "title": "Paste 9th Previous Clipboard Item",
+      "description": "Paste the 9th previous clipboard item (offset 9)",
+      "mode": "no-view"
     }
   ],
   "dependencies": {
