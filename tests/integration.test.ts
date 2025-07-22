@@ -45,25 +45,7 @@ describe('Integration Tests', () => {
       });
     });
 
-    it('should handle pop command integration', async () => {
-      const currentContent = 'current-item';
-      const nextContent = 'next-item';
-      
-      mockClipboard.readText.mockImplementation(({ offset = 0 } = {}) => {
-        return Promise.resolve(offset === 0 ? currentContent : nextContent);
-      });
-      mockClipboard.paste.mockResolvedValue();
-      mockClipboard.copy.mockResolvedValue();
 
-      const popCommand = await importCommand('pop-current');
-      await popCommand();
-
-      expect(mockClipboard.readText).toHaveBeenCalledWith({ offset: 0 });
-      expect(mockClipboard.paste).toHaveBeenCalledWith(currentContent);
-      expect(mockClipboard.readText).toHaveBeenCalledWith({ offset: 1 });
-      expect(mockClipboard.copy).toHaveBeenCalledWith(nextContent);
-      expect(mockShowHUD).toHaveBeenCalledWith('Popped current: current-item (moved to next)');
-    });
   });
 
   describe('Real-world Scenarios', () => {
@@ -262,30 +244,6 @@ describe('Integration Tests', () => {
       expect(mockClipboard.readText).toHaveBeenCalledTimes(4);
     });
 
-    it('should handle pop operations during concurrent paste operations', async () => {
-      const clipboardHistory = ['current', 'next', 'after-next'];
-      
-      mockClipboard.readText.mockImplementation(({ offset = 0 } = {}) => {
-        return Promise.resolve(clipboardHistory[offset] || null);
-      });
-      mockClipboard.paste.mockResolvedValue();
-      mockClipboard.copy.mockResolvedValue();
 
-      // Run pop and paste concurrently
-      const [popResult, pasteResult] = await Promise.all([
-        (async () => {
-          const popCommand = await importCommand('pop-current');
-          return popCommand();
-        })(),
-        (async () => {
-          const pasteCommand = await importCommand('paste-first');
-          return pasteCommand();
-        })()
-      ]);
-
-      // Both operations should complete successfully
-      expect(mockClipboard.paste).toHaveBeenCalledTimes(2);
-      expect(mockClipboard.copy).toHaveBeenCalledTimes(1);
-    });
   });
 }); 

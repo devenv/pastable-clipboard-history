@@ -45,12 +45,6 @@
       "title": "Paste 5th Previous Clipboard Item",
       "description": "Paste the 5th previous clipboard item (offset 5)",
       "mode": "no-view"
-    },
-    {
-      "name": "pop-current",
-      "title": "Pop Current Clipboard Item",
-      "description": "Paste and remove the current clipboard item (offset 0)",
-      "mode": "no-view"
     }
   ],
   "dependencies": {
@@ -78,6 +72,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
+    "verify": "node scripts/verify-setup.js",
     "prepare": "husky"
   },
   "lint-staged": {

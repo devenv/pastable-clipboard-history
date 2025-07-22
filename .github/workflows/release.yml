@@ -96,7 +96,7 @@ jobs:
           
           ### ✨ Features
           - 6 instant paste commands for clipboard positions 0-5
-          - Pop command with fixed single-copy strategy
+          
           - Perfect Raycast integration
           
           ### 🚀 Installation
@@ -110,7 +110,7 @@ jobs:
           ```
           
           ### 📦 What's Included
-          - 7 total commands (6 paste + 1 pop)
+          - 6 total commands (paste operations)
           - Comprehensive test suite
           - Full TypeScript support
           - Production-ready build
