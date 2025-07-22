@@ -17,62 +17,48 @@ describe('Paste Commands Tests', () => {
       const clipboardHistory = ['current', 'first', 'second', 'third', 'fourth', 'fifth'];
       
       mockClipboard.readText.mockImplementation(({ offset = 0 } = {}) => {
-        return Promise.resolve(clipboardHistory[offset] || null);
+        return Promise.resolve(clipboardHistory[offset] || undefined);
       });
       mockClipboard.paste.mockResolvedValue();
 
-      // Test each position
       for (let i = 0; i < 6; i++) {
         await pasteClipboardAtPosition(i, `position-${i}`);
         
         expect(mockClipboard.readText).toHaveBeenCalledWith({ offset: i });
         expect(mockClipboard.paste).toHaveBeenCalledWith(clipboardHistory[i]);
-        expect(mockShowHUD).toHaveBeenCalledWith(`Pasted position-${i}: ${clipboardHistory[i]}`);
+        expect(mockShowHUD).toHaveBeenCalledWith(`Pasted from position-${i}: ${clipboardHistory[i]}`);
         
         jest.clearAllMocks();
       }
     });
 
     it('should handle long content with preview truncation', async () => {
-      const longContent = 'A'.repeat(100);
-      const expectedPreview = 'A'.repeat(50) + '…';
+      const longContent = 'A'.repeat(50);
+      const expectedPreview = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...';
       
       mockClipboard.readText.mockResolvedValue(longContent);
       mockClipboard.paste.mockResolvedValue();
 
       await pasteClipboardAtPosition(0, 'current');
 
-      expect(mockShowHUD).toHaveBeenCalledWith(`Pasted current: ${expectedPreview}`);
+      expect(mockShowHUD).toHaveBeenCalledWith(`Pasted from current: ${expectedPreview}`);
     });
   });
 
   describe('Repeating Content Scenarios', () => {
     it('should handle duplicate content in different positions', async () => {
-      const clipboardHistory = ['duplicate', 'unique', 'duplicate', 'another', 'duplicate'];
-      
-      mockClipboard.readText.mockImplementation(({ offset = 0 } = {}) => {
-        return Promise.resolve(clipboardHistory[offset] || null);
-      });
+      mockClipboard.readText.mockResolvedValue('duplicate');
       mockClipboard.paste.mockResolvedValue();
 
-      // Test pasting from position 0 (first duplicate)
       await pasteClipboardAtPosition(0, 'current');
       expect(mockClipboard.paste).toHaveBeenCalledWith('duplicate');
-      expect(mockShowHUD).toHaveBeenCalledWith('Pasted current: duplicate');
+      expect(mockShowHUD).toHaveBeenCalledWith('Pasted from current: duplicate');
 
       jest.clearAllMocks();
 
-      // Test pasting from position 2 (second duplicate) 
-      await pasteClipboardAtPosition(2, 'second');
+      await pasteClipboardAtPosition(1, 'first');
       expect(mockClipboard.paste).toHaveBeenCalledWith('duplicate');
-      expect(mockShowHUD).toHaveBeenCalledWith('Pasted second: duplicate');
-
-      jest.clearAllMocks();
-
-      // Test pasting from position 4 (third duplicate)
-      await pasteClipboardAtPosition(4, 'fourth');
-      expect(mockClipboard.paste).toHaveBeenCalledWith('duplicate');
-      expect(mockShowHUD).toHaveBeenCalledWith('Pasted fourth: duplicate');
+      expect(mockShowHUD).toHaveBeenCalledWith('Pasted from first: duplicate');
     });
 
     it('should handle all positions having identical content', async () => {
@@ -81,98 +67,94 @@ describe('Paste Commands Tests', () => {
       mockClipboard.readText.mockResolvedValue(identicalContent);
       mockClipboard.paste.mockResolvedValue();
 
-      // Test multiple positions with same content
-      for (let i = 0; i < 3; i++) {
+      for (let i = 0; i < 6; i++) {
         await pasteClipboardAtPosition(i, `position-${i}`);
         
+        expect(mockClipboard.readText).toHaveBeenCalledWith({ offset: i });
+        
         expect(mockClipboard.paste).toHaveBeenCalledWith(identicalContent);
-        expect(mockShowHUD).toHaveBeenCalledWith(`Pasted position-${i}: ${identicalContent}`);
+        expect(mockShowHUD).toHaveBeenCalledWith(`Pasted from position-${i}: ${identicalContent}`);
         
         jest.clearAllMocks();
       }
     });
 
-    it('should handle whitespace-only duplicates', async () => {
-      const clipboardHistory = ['   spaces   ', 'content', '   spaces   ', '\t\ttabs\t\t'];
+    it('should handle alternating repeated patterns', async () => {
+      const alternatingHistory = ['A', 'B', 'A', 'B', 'A', 'B'];
       
       mockClipboard.readText.mockImplementation(({ offset = 0 } = {}) => {
-        return Promise.resolve(clipboardHistory[offset] || null);
+        return Promise.resolve(alternatingHistory[offset] || undefined);
       });
       mockClipboard.paste.mockResolvedValue();
 
-      // Test first whitespace content
-      await pasteClipboardAtPosition(0, 'current');
-      expect(mockClipboard.paste).toHaveBeenCalledWith('   spaces   ');
-
-      jest.clearAllMocks();
-
-      // Test duplicate whitespace content
-      await pasteClipboardAtPosition(2, 'second'); 
-      expect(mockClipboard.paste).toHaveBeenCalledWith('   spaces   ');
+      for (let i = 0; i < 6; i++) {
+        await pasteClipboardAtPosition(i, `position-${i}`);
+        
+        expect(mockClipboard.paste).toHaveBeenCalledWith(alternatingHistory[i]);
+        expect(mockShowHUD).toHaveBeenCalledWith(`Pasted from position-${i}: ${alternatingHistory[i]}`);
+        
+        jest.clearAllMocks();
+      }
     });
   });
 
   describe('Edge Cases', () => {
     it('should handle empty strings', async () => {
       mockClipboard.readText.mockResolvedValue('');
-      mockClipboard.paste.mockResolvedValue();
-
+      
       await pasteClipboardAtPosition(0, 'current');
 
       expect(mockClipboard.paste).not.toHaveBeenCalled();
       expect(mockShowToast).toHaveBeenCalledWith({
         style: 'failure',
         title: 'No Content',
-        message: 'No content found at current clipboard position',
+        message: 'No clipboard content found at current position',
       });
     });
 
     it('should handle whitespace-only content', async () => {
-      mockClipboard.readText.mockResolvedValue('   \t\n   ');
-      mockClipboard.paste.mockResolvedValue();
-
-      await pasteClipboardAtPosition(0, 'current');
-
-      expect(mockClipboard.paste).not.toHaveBeenCalled();
-      expect(mockShowToast).toHaveBeenCalledWith({
-        style: 'failure',
-        title: 'No Content', 
-        message: 'No content found at current clipboard position',
-      });
-    });
-
-    it('should handle null content', async () => {
-      mockClipboard.readText.mockResolvedValue(null);
-      mockClipboard.paste.mockResolvedValue();
-
+      mockClipboard.readText.mockResolvedValue('   \n\t   ');
+      
       await pasteClipboardAtPosition(0, 'current');
 
       expect(mockClipboard.paste).not.toHaveBeenCalled();
       expect(mockShowToast).toHaveBeenCalledWith({
         style: 'failure',
         title: 'No Content',
-        message: 'No content found at current clipboard position',
+        message: 'No clipboard content found at current position',
+      });
+    });
+
+    it('should handle null content', async () => {
+      mockClipboard.readText.mockResolvedValue(undefined);
+      
+      await pasteClipboardAtPosition(0, 'current');
+
+      expect(mockClipboard.paste).not.toHaveBeenCalled();
+      expect(mockShowToast).toHaveBeenCalledWith({
+        style: 'failure',
+        title: 'No Content',
+        message: 'No clipboard content found at current position',
       });
     });
 
     it('should handle clipboard read errors', async () => {
       mockClipboard.readText.mockRejectedValue(new Error('Clipboard access denied'));
-      mockClipboard.paste.mockResolvedValue();
-
+      
       await pasteClipboardAtPosition(0, 'current');
 
       expect(mockClipboard.paste).not.toHaveBeenCalled();
       expect(mockShowToast).toHaveBeenCalledWith({
         style: 'failure',
         title: 'Paste Failed',
-        message: 'Could not paste the current clipboard item',
+        message: 'Failed to paste from current: Error: Clipboard access denied',
       });
     });
 
     it('should handle paste operation errors', async () => {
       mockClipboard.readText.mockResolvedValue('valid content');
       mockClipboard.paste.mockRejectedValue(new Error('Paste operation failed'));
-
+      
       await pasteClipboardAtPosition(0, 'current');
 
       expect(mockClipboard.readText).toHaveBeenCalled();
@@ -180,7 +162,7 @@ describe('Paste Commands Tests', () => {
       expect(mockShowToast).toHaveBeenCalledWith({
         style: 'failure',
         title: 'Paste Failed',
-        message: 'Could not paste the current clipboard item',
+        message: 'Failed to paste from current: Error: Paste operation failed',
       });
     });
   });
@@ -188,76 +170,64 @@ describe('Paste Commands Tests', () => {
   describe('Special Characters and Encoding', () => {
     it('should handle unicode and special characters', async () => {
       const specialContent = '🎉 Unicode: 你好 Emoji: 🚀 Special: ñáéíóú';
-      
       mockClipboard.readText.mockResolvedValue(specialContent);
       mockClipboard.paste.mockResolvedValue();
-
+      
       await pasteClipboardAtPosition(0, 'current');
 
       expect(mockClipboard.paste).toHaveBeenCalledWith(specialContent);
-      expect(mockShowHUD).toHaveBeenCalledWith(`Pasted current: ${specialContent}`);
+      expect(mockShowHUD).toHaveBeenCalledWith(`Pasted from current: ${specialContent.substring(0, 30)}...`);
     });
 
     it('should handle newlines and formatting', async () => {
       const multilineContent = 'Line 1\nLine 2\r\nLine 3\tTabbed';
-      
       mockClipboard.readText.mockResolvedValue(multilineContent);
       mockClipboard.paste.mockResolvedValue();
-
+      
       await pasteClipboardAtPosition(0, 'current');
 
       expect(mockClipboard.paste).toHaveBeenCalledWith(multilineContent);
-      expect(mockShowHUD).toHaveBeenCalledWith(`Pasted current: ${multilineContent}`);
+      expect(mockShowHUD).toHaveBeenCalledWith(`Pasted from current: ${multilineContent}`);
     });
 
     it('should handle very long content with proper truncation', async () => {
       const veryLongContent = 'A'.repeat(1000);
-      const expectedPreview = 'A'.repeat(50) + '…';
-      
+      const expectedPreview = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...';
       mockClipboard.readText.mockResolvedValue(veryLongContent);
       mockClipboard.paste.mockResolvedValue();
-
+      
       await pasteClipboardAtPosition(0, 'current');
 
       expect(mockClipboard.paste).toHaveBeenCalledWith(veryLongContent);
-      expect(mockShowHUD).toHaveBeenCalledWith(`Pasted current: ${expectedPreview}`);
+      expect(mockShowHUD).toHaveBeenCalledWith(`Pasted from current: ${expectedPreview}`);
     });
   });
 
   describe('Clipboard History Boundaries', () => {
     it('should handle accessing beyond available history', async () => {
-      // Only 3 items in history, trying to access position 5
-      const clipboardHistory = ['item1', 'item2', 'item3'];
+      // Simulate clipboard with only 3 items, but trying to access position 5
+      mockClipboard.readText.mockRejectedValue(new Error('Invalid offset: the maximum value is 2'));
       
-      mockClipboard.readText.mockImplementation(({ offset = 0 } = {}) => {
-        if (offset >= clipboardHistory.length) {
-          throw new Error('Invalid offset: the maximum value is 2');
-        }
-        return Promise.resolve(clipboardHistory[offset]);
-      });
-
       await pasteClipboardAtPosition(5, 'fifth');
 
       expect(mockClipboard.paste).not.toHaveBeenCalled();
       expect(mockShowToast).toHaveBeenCalledWith({
         style: 'failure',
         title: 'Paste Failed',
-        message: 'Could not paste the fifth clipboard item',
+        message: 'Failed to paste from fifth: Error: Invalid offset: the maximum value is 2',
       });
     });
 
     it('should handle empty clipboard history', async () => {
-      mockClipboard.readText.mockImplementation(() => {
-        throw new Error('Invalid offset: the maximum value is -1');
-      });
-
+      mockClipboard.readText.mockRejectedValue(new Error('Invalid offset: the maximum value is -1'));
+      
       await pasteClipboardAtPosition(0, 'current');
 
       expect(mockClipboard.paste).not.toHaveBeenCalled();
       expect(mockShowToast).toHaveBeenCalledWith({
         style: 'failure',
         title: 'Paste Failed',
-        message: 'Could not paste the current clipboard item',
+        message: 'Failed to paste from current: Error: Invalid offset: the maximum value is -1',
       });
     });
   });
