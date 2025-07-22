@@ -47,13 +47,12 @@ export async function popClipboardAtPosition(offset: number, positionName: strin
     // Paste the content
     await Clipboard.paste(content);
 
-    // Copy current clipboard to effectively "remove" the old item
-    // This shifts the clipboard history forward, removing the popped item
-    await Clipboard.copy(content);
+    // Clear the clipboard by copying an empty string to prevent re-pasting
+    await Clipboard.copy("");
 
     // Show confirmation HUD with preview
     const preview = content.length > 50 ? content.substring(0, 50) + "…" : content;
-    await showHUD(`Popped ${positionName}: ${preview}`);
+    await showHUD(`Popped ${positionName}: ${preview} (clipboard cleared)`);
   } catch (error) {
     await showToast({
       style: Toast.Style.Failure,
