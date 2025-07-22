@@ -30,9 +30,9 @@ A powerful Raycast extension that provides instant access to your clipboard hist
 ### Pop Command (1 total)
 | Command | Description | Offset |
 |---------|-------------|--------|
-| `pop-second-last` | Pop Second Last Clipboard Item | 1 |
+| `pop-current` | Pop Current Clipboard Item | 0 |
 
-**Pop Functionality**: The pop command both pastes the content AND removes it from clipboard history by copying it again, effectively shifting the history forward.
+**Pop Functionality**: The pop command both pastes the current clipboard content AND removes it from clipboard history by copying it again, effectively shifting the history forward.
 
 ## 🎮 Usage
 
