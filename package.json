@@ -4,7 +4,7 @@
   "title": "Pastable Clipboard History",
   "description": "Instantly paste clipboard items from positions 0-9 with dedicated keyboard shortcuts",
   "icon": "clipboard.png",
-  "author": "raycast-dev",
+  "author": "wook",
   "categories": ["Productivity"],
   "license": "MIT",
   "commands": [
